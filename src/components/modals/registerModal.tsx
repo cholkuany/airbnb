@@ -1,9 +1,8 @@
 "use client";
 
 import axios from "axios";
-import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { useActionState, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import { useRegisterModal, useLoginModal } from "@/app/hooks/useModal";
@@ -43,6 +42,7 @@ export default function RegisterModal() {
         loginModal.onOpen();
       })
       .catch((error) => {
+        console.log(error);
         toast.error("Something went wrong.");
       })
       .finally(() => {

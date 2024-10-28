@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { useRentModal } from "@/app/hooks/useModal";
 
 import { Modal } from "./modal";
-import { STEPS } from "@/types";
+import { CountrySelectValue, STEPS } from "@/types";
 
 import { categories } from "../navigation/categories";
 import { Heading } from "../heading";
@@ -60,10 +60,13 @@ export const RentModal = () => {
       dynamic(() => import("../map").then((module) => module.Map), {
         ssr: false,
       }),
-    [location]
+    []
   );
 
-  const setCustomValue = (name: string, value: any) => {
+  const setCustomValue = (
+    name: string,
+    value: number | string | CountrySelectValue
+  ) => {
     setValue(name, value, {
       shouldValidate: true,
       shouldDirty: true,
@@ -94,6 +97,7 @@ export const RentModal = () => {
         rentModal.onClose();
       })
       .catch((error) => {
+        console.log(error);
         toast.error("Something went wrong!");
       })
       .finally(() => {

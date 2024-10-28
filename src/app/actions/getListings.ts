@@ -1,5 +1,6 @@
 import prisma from "@/libs/prismadb";
 import { PropertiesSearchParams } from "@/types";
+import { Prisma } from "@prisma/client";
 
 export default async function getListings(params: PropertiesSearchParams) {
   try {
@@ -14,7 +15,7 @@ export default async function getListings(params: PropertiesSearchParams) {
       category,
     } = params;
 
-    let query: any = {};
+    const query: Prisma.ListingWhereInput = {};
 
     if (userId) {
       query.userId = userId;
@@ -65,7 +66,11 @@ export default async function getListings(params: PropertiesSearchParams) {
       createdAt: listing.createdAt.toISOString(),
     }));
     return SafeListing;
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
   }
 }

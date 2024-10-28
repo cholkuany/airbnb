@@ -1,12 +1,13 @@
 import prisma from "@/libs/prismadb";
 
 import { IParamReservationsProps } from "@/types";
+import { Prisma } from "@prisma/client";
 
 export const getReservations = async (params: IParamReservationsProps) => {
   try {
     const { listingId, userId, authorId } = params;
 
-    const query: any = {};
+    const query: Prisma.ReservationWhereInput = {};
     if (listingId) {
       query.listingId = listingId;
     }
@@ -39,7 +40,11 @@ export const getReservations = async (params: IParamReservationsProps) => {
       },
     }));
     return safeReservations;
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
   }
 };

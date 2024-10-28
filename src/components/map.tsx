@@ -10,7 +10,7 @@ import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 import { MapProps } from "@/types";
 
-//@ts-ignore
+//@ts-expect-error _getIconUrl exists
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon.src,

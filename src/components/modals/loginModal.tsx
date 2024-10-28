@@ -92,7 +92,7 @@ export default function LoginModal() {
                 "
       >
         <div className="flex flex-row justify-center items-center gap-2">
-          <div>Don't have an account?</div>
+          <div>Don&apos;t have an account?</div>
           <div
             onClick={toggle}
             className="text-neutral-800 cursor-pointer hover:underline"

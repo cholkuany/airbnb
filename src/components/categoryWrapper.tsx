@@ -22,10 +22,11 @@ const CategoryWrapper: React.FC<CategoryWrapperProps> = ({
     if (searchParams) {
       currentQuery = qs.parse(searchParams.toString());
     }
-    const updatedQuery: any = {
-      ...currentQuery,
-      category: label,
-    };
+    const updatedQuery: Record<string, string | number | string[] | undefined> =
+      {
+        ...currentQuery,
+        category: label,
+      };
 
     if (searchParams?.get("category") === label) {
       delete updatedQuery.category;

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import prisma from "@/libs/prismadb";
-import { State, FormState } from "@/types";
+import { State } from "@/types";
 
 const FormSchema = z.object({
   name: z.string().min(4, {
@@ -38,18 +38,14 @@ export async function registerUser(prevState: State, formData: FormData) {
         hashedPassword,
       },
     });
-  } catch (err) {
+    return {
+      errors: {},
+      message: `${user.name}: account created!`,
+    };
+  } catch {
     return {
       errors: {},
       message: "Database Error: Failed to Create user.",
     };
   }
-
-  return {
-    errors: {},
-    message: "User account created",
-  };
-
-  //   revalidatePath('/');
-  //   redirect('/');
 }

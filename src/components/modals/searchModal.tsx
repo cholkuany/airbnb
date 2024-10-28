@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Modal } from "./modal";
 import { useSearchModal } from "@/app/hooks/useModal";
-import { use, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Range } from "react-date-range";
 import dynamic from "next/dynamic";
 import { CountrySelectValue } from "@/types";
@@ -41,7 +41,7 @@ export const SearchModal = () => {
       dynamic(() => import("../map").then((module) => module.Map), {
         ssr: false,
       }),
-    [location]
+    []
   );
 
   const onBack = useCallback(() => {
@@ -62,13 +62,14 @@ export const SearchModal = () => {
       currentQuery = qs.parse(params.toString());
     }
 
-    const updatedQuery: any = {
-      ...currentQuery,
-      locationValue: location?.value,
-      guestCount,
-      roomCount,
-      bathroomCount,
-    };
+    const updatedQuery: Record<string, string | number | string[] | undefined> =
+      {
+        ...currentQuery,
+        locationValue: location?.value,
+        guestCount,
+        roomCount,
+        bathroomCount,
+      };
 
     if (dateRange.startDate) {
       updatedQuery.startDate = formatISO(dateRange.startDate);

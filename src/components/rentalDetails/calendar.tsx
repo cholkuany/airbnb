@@ -1,6 +1,6 @@
 "use client";
 
-import { Range, DateRange } from "react-date-range";
+import { DateRange } from "react-date-range";
 import { CalendaProps } from "@/types";
 
 import "react-date-range/dist/styles.css"; // main style file

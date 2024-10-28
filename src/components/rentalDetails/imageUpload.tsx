@@ -3,30 +3,30 @@
 import { useCallback } from "react";
 import Image from "next/image";
 
-import { CldUploadWidget } from "next-cloudinary";
+import {
+  CldUploadWidget,
+  CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 
 import { TbPhotoPlus } from "react-icons/tb";
-
 import { ImageUploadProps } from "@/types";
-
-declare global {
-  let cloudinary: any;
-}
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   value,
 }) => {
   const handleUpload = useCallback(
-    (result: any) => {
-      onChange(result.secure_url);
+    (info: CloudinaryUploadWidgetResults["info"]) => {
+      if (typeof info === "object" && info?.secure_url) {
+        onChange(info.secure_url);
+      }
     },
     [onChange]
   );
 
   return (
     <CldUploadWidget
-      onSuccess={(result, { widget }) => {
+      onSuccess={(result: CloudinaryUploadWidgetResults) => {
         handleUpload(result?.info);
       }}
       onQueuesEnd={(result, { widget }) => {

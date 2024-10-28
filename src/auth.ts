@@ -3,11 +3,12 @@ import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import prisma from "./libs/prismadb";
-var bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 import GoogleProvider from "next-auth/providers/google";
+import { User } from "@prisma/client";
 
-async function getUser(email: string): Promise<any | undefined> {
+async function getUser(email: string): Promise<User | null | undefined> {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -48,11 +49,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const user = await getUser(email);
           if (!user) return null;
 
-          const passwordsMatch = await bcrypt.compare(
-            password,
-            user.hashedPassword
-          );
-          if (passwordsMatch) return user;
+          if (user?.hashedPassword) {
+            const passwordsMatch = await bcrypt.compare(
+              password,
+              user.hashedPassword
+            );
+            if (passwordsMatch) return user;
+          }
         }
         return null;
       },

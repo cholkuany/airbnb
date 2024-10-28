@@ -26,7 +26,11 @@ export default async function getUser() {
       updatedAt: user.updatedAt.toISOString(),
       emailVerified: user.emailVerified?.toISOString() || null,
     };
-  } catch (err: any) {
-    return null;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
   }
 }
