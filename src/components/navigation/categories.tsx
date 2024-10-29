@@ -21,6 +21,8 @@ import { IoSnowOutline } from "react-icons/io5";
 import { MdOutlineVilla } from "react-icons/md";
 import CategoryWrapper from "../categoryWrapper";
 import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { LoadSuspense } from "../contentFiller";
 
 export const categories = [
   {
@@ -112,12 +114,14 @@ export default function Categories() {
       <div className="pt-4 gap-4 flex flex-row items-center justify-center overflow-x-auto">
         {categories.map((item) => {
           return (
-            <CategoryWrapper
-              key={item.name}
-              label={item.name}
-              icon={item.icon}
-              selected={category === item.name}
-            />
+            <Suspense fallback={<LoadSuspense />}>
+              <CategoryWrapper
+                key={item.name}
+                label={item.name}
+                icon={item.icon}
+                selected={category === item.name}
+              />
+            </Suspense>
           );
         })}
       </div>

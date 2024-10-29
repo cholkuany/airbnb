@@ -38,55 +38,14 @@ export async function POST(
   request: Request,
   { params }: { params: ListingParams }
 ) {
-  // const user = await getUser();
-
-  // if (!user) return NextResponse.error();
-
-  // const { listingId } = params;
-  // if (!listingId || typeof listingId !== "string")
-  //   throw new Error("Invalid ID");
   const updatedUser = await getFavorites(params, "POST");
   return NextResponse.json(updatedUser);
-  // const favoriteIds = [...(user.favoriteIds || [])];
-
-  // favoriteIds.push(listingId);
-
-  // const updatedUser = await prisma.user.update({
-  //   where: {
-  //     id: user.id,
-  //   },
-  //   data: {
-  //     favoriteIds,
-  //   },
-  // });
-  // return NextResponse.json(updatedUser);
 }
 
 export async function DELETE(
   request: Request,
   { params }: { params: ListingParams }
 ) {
-  // const user = await getUser();
-
-  // if (!user) return NextResponse.error();
-
-  // const { listingId } = params;
-
-  // if (!listingId || typeof listingId !== "string") {
-  //   throw new Error("Invalid ID");
-  // }
   const updatedUser = await getFavorites(params, "DELETE");
   return NextResponse.json(updatedUser);
-  // let favoriteIds = [...(user.favoriteIds || [])];
-  // favoriteIds = favoriteIds.filter((id) => id !== listingId);
-
-  // const updatedUser = await prisma.user.update({
-  //   where: {
-  //     id: user.id,
-  //   },
-  //   data: {
-  //     favoriteIds,
-  //   },
-  // });
-  // return NextResponse.json(updatedUser);
 }

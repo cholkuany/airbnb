@@ -5,6 +5,8 @@ import Logo from "./logo";
 import Search from "./search";
 import UserMenu from "./userMenu";
 import Categories from "./categories";
+import { Suspense } from "react";
+import { CategoriesSuspense, LoadSuspense } from "../contentFiller";
 
 const Navbar = () => {
   return (
@@ -13,12 +15,18 @@ const Navbar = () => {
         <Container>
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo />
-            <Search />
+            <Suspense fallback={<LoadSuspense />}>
+              <Search />
+            </Suspense>
+
             <UserMenu />
           </div>
         </Container>
       </div>
-      <Categories />
+
+      <Suspense fallback={<CategoriesSuspense />}>
+        <Categories />
+      </Suspense>
     </div>
   );
 };
