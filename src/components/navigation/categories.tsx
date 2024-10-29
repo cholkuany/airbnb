@@ -111,20 +111,20 @@ export default function Categories() {
   if (!isHomePage) return;
   return (
     <Container>
-      <div className="pt-4 gap-4 flex flex-row items-center justify-center overflow-x-auto">
-        {categories.map((item) => {
-          return (
-            <Suspense fallback={<LoadSuspense />}>
+      <Suspense fallback={<LoadSuspense />}>
+        <div className="pt-4 gap-4 flex flex-row items-center justify-center overflow-x-auto">
+          {categories.map((item) => {
+            return (
               <CategoryWrapper
                 key={item.name}
                 label={item.name}
                 icon={item.icon}
                 selected={category === item.name}
               />
-            </Suspense>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </Suspense>
     </Container>
   );
 }

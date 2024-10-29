@@ -11,8 +11,11 @@ export const LoadSuspense = () => {
 };
 
 export const CategoriesSuspense = () => {
-  return new Array(15).fill(0).map(() => (
-    <div className="h-[4vh] flex flex-col justify-center items-center">
+  return new Array(15).fill(0).map((index) => (
+    <div
+      key={index}
+      className="h-[4vh] flex flex-col justify-center items-center"
+    >
       <PuffLoader size={20} color="red" />
     </div>
   ));
