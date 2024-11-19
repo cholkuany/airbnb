@@ -13,11 +13,19 @@ import {
 
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+
+const protectedRoutes = [
+  "/trips",
+  "/reservations",
+  "/properties",
+  "/favorites",
+];
 
 const UserMenu = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -104,7 +112,15 @@ const UserMenu = () => {
                   label="My properties"
                 />
                 <MenuItem onClick={rentModal.onOpen} label="Airbnb my home" />
-                <MenuItem onClick={() => signOut()} label="Logout" />
+                <MenuItem
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: "/",
+                      redirect: pathname === "/" ? false : true,
+                    })
+                  }
+                  label="Logout"
+                />
               </>
             ) : (
               <>
