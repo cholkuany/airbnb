@@ -10,6 +10,8 @@ import LoginModal from "@/components/modals/loginModal";
 import ToasterProvider from "@/providers/toasterProvider";
 import { SessionProvider } from "next-auth/react";
 import { SearchModal } from "@/components/modals/searchModal";
+import { Suspense } from "react";
+import { SearchLoader } from "@/components/loader";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,7 +41,9 @@ export default async function RootLayout({
       >
         <SessionProvider>
           <ToasterProvider />
-          <SearchModal />
+          <Suspense fallback={<SearchLoader />}>
+            <SearchModal />
+          </Suspense>
           <RegisterModal />
           <RentModal />
           <LoginModal />

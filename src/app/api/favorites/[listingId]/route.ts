@@ -5,11 +5,11 @@ import prisma from "@/libs/prismadb";
 
 import { ListingParams } from "@/types";
 
-const getFavorites = async (params: ListingParams, type: string) => {
+const getFavorites = async (listingId: string | undefined, type: string) => {
   const user = await getUser();
 
   if (!user) return NextResponse.error();
-  const { listingId } = params;
+  // const { listingId } = params;
   if (!listingId || typeof listingId !== "string")
     throw new Error("Invalid ID");
 
@@ -36,16 +36,18 @@ const getFavorites = async (params: ListingParams, type: string) => {
 
 export async function POST(
   request: Request,
-  { params }: { params: ListingParams }
+  { params }: { params: Promise<ListingParams> }
 ) {
-  const updatedUser = await getFavorites(params, "POST");
+  const { listingId } = await params;
+  const updatedUser = await getFavorites(listingId, "POST");
   return NextResponse.json(updatedUser);
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: ListingParams }
+  { params }: { params: Promise<ListingParams> }
 ) {
-  const updatedUser = await getFavorites(params, "DELETE");
+  const { listingId } = await params;
+  const updatedUser = await getFavorites(listingId, "DELETE");
   return NextResponse.json(updatedUser);
 }

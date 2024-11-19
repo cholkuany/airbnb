@@ -3,6 +3,10 @@ import { EmptyState } from "@/components/emptyState";
 import getUser from "../actions/getUser";
 import { getReservations } from "../actions/getReservations";
 import { TripsClient } from "./tripsClient";
+import { Suspense } from "react";
+import { SearchLoader } from "@/components/loader";
+
+export const dynamic = "force-dynamic";
 
 const Trips = async () => {
   const user = await getUser();
@@ -23,6 +27,10 @@ const Trips = async () => {
     );
   }
 
-  return <TripsClient reservations={reservations} user={user} />;
+  return (
+    <Suspense fallback={<SearchLoader />}>
+      <TripsClient reservations={reservations} user={user} />
+    </Suspense>
+  );
 };
 export default Trips;

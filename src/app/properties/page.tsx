@@ -4,6 +4,8 @@ import getUser from "../actions/getUser";
 import getListings from "../actions/getListings";
 import { PropertiesClient } from "./propertiesClient";
 
+export const dynamic = "force-dynamic";
+
 const Properties = async () => {
   const user = await getUser();
 

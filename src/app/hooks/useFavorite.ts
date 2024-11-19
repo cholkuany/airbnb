@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -19,6 +21,7 @@ export const useFavorite = ({ listingId, user }: FavoritesProps) => {
 
   const toggleFavorite = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
       e.stopPropagation();
 
       if (!user) {

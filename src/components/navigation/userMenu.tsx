@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const UserMenu = () => {
-  const session = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -30,11 +30,11 @@ const UserMenu = () => {
   }, []);
 
   const onRent = useCallback(() => {
-    if (!session.data?.user) {
+    if (!session?.user) {
       return loginModal.onOpen();
     }
     rentModal.onOpen();
-  }, [session.data?.user, loginModal, rentModal]);
+  }, [session?.user, loginModal, rentModal]);
 
   return (
     <div className="relative">
@@ -85,7 +85,7 @@ const UserMenu = () => {
                     "
         >
           <div className="flex flex-col cursor-pointer">
-            {session.data?.user ? (
+            {session?.user ? (
               <>
                 <MenuItem
                   onClick={() => router.push("/trips")}

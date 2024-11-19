@@ -25,6 +25,7 @@ export const ListingClient: React.FC<ListingClientProps> = ({
   reservations = [],
   user,
 }) => {
+  console.log("Listing client called with:***", listing);
   const loginModal = useLoginModal();
   const router = useRouter();
 
@@ -93,6 +94,7 @@ export const ListingClient: React.FC<ListingClientProps> = ({
       return category.name === listing.category;
     });
   }, [listing.category]);
+
   return (
     <Container>
       <div className="max-w-screen-lg mx-auto">
@@ -104,15 +106,7 @@ export const ListingClient: React.FC<ListingClientProps> = ({
             id={listing.id}
             user={user}
           />
-          <div
-            className="
-            grid
-            grid-cols-1
-            md:grid-cols-7
-            md:gap-8
-            mt-6
-          "
-          >
+          <div className="grid grid-cols-1 md:grid-cols-7 md:gap-8 mt-6">
             <ListingInfo
               user={listing.user}
               category={category}

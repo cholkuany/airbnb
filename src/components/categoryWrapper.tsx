@@ -9,13 +9,12 @@ import { CategoryWrapperProps } from "@/types";
 const CategoryWrapper: React.FC<CategoryWrapperProps> = ({
   icon: Icon,
   label,
-  selected,
 }) => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  // const category = searchParams?.get("category");
-  // const selected = category === label;
+  const category = searchParams?.get("category");
+  const selected = category === label;
 
   const handleCLick = useCallback(() => {
     let currentQuery = {};

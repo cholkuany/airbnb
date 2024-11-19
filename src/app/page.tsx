@@ -6,10 +6,12 @@ import getUser from "./actions/getUser";
 import { SafeListing } from "@/types";
 import { PropertiesSearchParams } from "@/types";
 
-interface HomeProps {
-  searchParams: PropertiesSearchParams;
-}
-const Home = async ({ searchParams }: HomeProps) => {
+type Params = Promise<PropertiesSearchParams>;
+
+export const dynamic = "force-dynamic";
+
+const Home = async ({ params }: { params: Params }) => {
+  const searchParams = await params;
   const listings = await getListings(searchParams);
   const user = await getUser();
 
@@ -24,15 +26,9 @@ const Home = async ({ searchParams }: HomeProps) => {
     <Container>
       <div
         className="
-        p-24
-        grid
-        grid-cols-1
-        sm:grid-cols-2
-        md:grid-cols-3
-        lg:grid-cols-4
-        xl:grid-cols-5
-        2xl:grid-cols-6
-        gap-8
+        p-24 grid grid-cols-1 sm:grid-cols-2
+        md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5
+        2xl:grid-cols-6 gap-8
       "
       >
         {listings.map((listing: SafeListing) => {

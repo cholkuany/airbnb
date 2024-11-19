@@ -1,14 +1,16 @@
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
+
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+
 import { z } from "zod";
 import prisma from "./libs/prismadb";
 import bcrypt from "bcrypt";
 
-import GoogleProvider from "next-auth/providers/google";
 import { User } from "@prisma/client";
 
-async function getUser(email: string): Promise<User | null | undefined> {
+async function queryUser(email: string): Promise<User | null | undefined> {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -18,17 +20,14 @@ async function getUser(email: string): Promise<User | null | undefined> {
     return user;
   } catch (error) {
     console.error("Failed to fetch user:", error);
-    throw new Error("Failed to fetch user.");
+    return null;
   }
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
+    Google,
 
     Credentials({
       credentials: {
@@ -39,51 +38,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           placeholder: "Password",
         },
       },
-      async authorize(credentials) {
+
+      authorize: async (credentials) => {
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
 
-        if (parsedCredentials.success) {
-          const { email, password } = parsedCredentials.data;
-          const user = await getUser(email);
-          if (!user) return null;
-
-          if (user?.hashedPassword) {
-            const passwordsMatch = await bcrypt.compare(
-              password,
-              user.hashedPassword
-            );
-            if (passwordsMatch) return user;
-          }
+        if (!parsedCredentials.success) {
+          throw new Error("Invalid credentials format");
         }
-        return null;
+
+        const { email, password } = parsedCredentials.data;
+
+        try {
+          const user = await queryUser(email);
+          if (!user || !user.hashedPassword) return null;
+
+          const passwordsMatch = await bcrypt.compare(
+            password,
+            user.hashedPassword
+          );
+
+          return passwordsMatch ? user : null;
+        } catch (error) {
+          console.error("Authorization error:", error);
+          return null;
+        }
       },
     }),
   ],
 });
 
-// if(!credentials?.email || !credentials?.password){
-//     throw new Error('Invalid credentials')
-// }
-
-// const user = await prisma?.user.findUnique({
-//     where: {
-//         email: credentials.email
-//     }
-// })
-
-// if(!user || !user?.hashedPassword){
-//     throw new Error('Invalid credentials')
-// }
-
-// const isCorrectPassword = await bcrypt.compare(
-//     credentials.password,
-//     user.hashedPassword
-// )
-
-// if(!isCorrectPassword){
-//     throw new Error('Invalid credentials')
-// }
-
-// return user
+// GoogleProvider({
+//   clientId: process.env.GOOGLE_CLIENT_ID as string,
+//   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+// }),

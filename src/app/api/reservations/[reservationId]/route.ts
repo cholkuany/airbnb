@@ -6,7 +6,7 @@ import { DeleteParams } from "@/types";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: DeleteParams }
+  { params }: { params: Promise<DeleteParams> }
 ) {
   const user = await getUser();
 
@@ -14,7 +14,7 @@ export async function DELETE(
     return NextResponse.error();
   }
 
-  const { reservationId } = params;
+  const { reservationId } = await params;
 
   if (!reservationId || typeof reservationId !== "string") {
     throw new Error("Invalid ID");

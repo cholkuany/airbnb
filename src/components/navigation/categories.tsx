@@ -20,7 +20,7 @@ import { IoSnowOutline } from "react-icons/io5";
 
 import { MdOutlineVilla } from "react-icons/md";
 import CategoryWrapper from "../categoryWrapper";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 import { LoadSuspense } from "../contentFiller";
 
@@ -103,8 +103,6 @@ export const categories = [
 ];
 
 export default function Categories() {
-  const searchParams = useSearchParams();
-  const category = searchParams?.get("category");
   const pathname = usePathname();
 
   const isHomePage = pathname === "/";
@@ -119,7 +117,6 @@ export default function Categories() {
                 key={item.name}
                 label={item.name}
                 icon={item.icon}
-                selected={category === item.name}
               />
             );
           })}

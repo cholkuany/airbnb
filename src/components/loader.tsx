@@ -9,3 +9,11 @@ export const Loader = () => {
     </div>
   );
 };
+
+export const SearchLoader = () => {
+  return (
+    <div className="h-[20vh] flex flex-col justify-center items-center">
+      <PuffLoader size={100} color="red" />
+    </div>
+  );
+};

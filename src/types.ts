@@ -62,7 +62,7 @@ export interface ModalProps {
 }
 
 export interface MapProps {
-  center?: number[];
+  center?: [number, number];
 }
 
 export interface InputProps {
@@ -85,7 +85,7 @@ export interface HeadingProps {
 export type CountrySelectValue = {
   flag: string;
   name: string;
-  latlng: number[];
+  latlng: [number, number];
   region: string;
   value: string;
 };
@@ -97,7 +97,7 @@ export interface CountrySelectProps {
 export interface CategoryWrapperProps {
   icon: IconType;
   label: string;
-  selected: boolean;
+  // selected: boolean;
 }
 export interface CategorySelectionProps {
   onClick: (value: string) => void;

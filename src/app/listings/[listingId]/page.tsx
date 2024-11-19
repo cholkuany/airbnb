@@ -9,26 +9,42 @@ import { getReservations } from "@/app/actions/getReservations";
 export default async function ListingDetails({
   params,
 }: {
-  params: ListingByIdProps;
+  params: Promise<ListingByIdProps>;
 }) {
-  const listing = await getListingById(params);
-  const reservations = await getReservations(params);
-  const user = await getUser();
+  const searchParams = await params;
 
-  if (!listing) {
+  if (!searchParams.listingId) {
+    return <EmptyState title="Invalid Parameters" />;
+  }
+
+  try {
+    const [listing, reservations, user] = await Promise.all([
+      getListingById(searchParams),
+      getReservations(searchParams),
+      getUser(),
+    ]);
+
+    if (!listing) {
+      return <EmptyState />;
+    }
+
     return (
-      <>
-        <EmptyState />
-      </>
+      <Container>
+        <ListingClient
+          listing={listing}
+          user={user}
+          reservations={reservations}
+        />
+      </Container>
+    );
+  } catch (error) {
+    console.error("Error in ListingDetails:", error);
+
+    return (
+      <EmptyState
+        title="Something went wrong"
+        subtitle="We couldn't load the listing details. Please try again later."
+      />
     );
   }
-  return (
-    <Container>
-      <ListingClient
-        listing={listing}
-        user={user}
-        reservations={reservations}
-      />
-    </Container>
-  );
 }

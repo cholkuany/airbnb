@@ -4,6 +4,8 @@ import getUser from "../actions/getUser";
 import { getReservations } from "../actions/getReservations";
 import { ReservationsClient } from "./reservationsClient";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReservationHome() {
   const user = await getUser();
 
