@@ -116,7 +116,9 @@ const UserMenu = () => {
                   onClick={() =>
                     signOut({
                       callbackUrl: "/",
-                      redirect: pathname === "/" ? false : true,
+                      redirect: protectedRoutes.includes(pathname)
+                        ? false
+                        : true,
                     })
                   }
                   label="Logout"
